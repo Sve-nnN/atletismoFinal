@@ -43,22 +43,7 @@ struct Obstaculo {
 };
 
 void imprimirStickman(string j, int x, int y) {
-	// Definir colores ANSI
-	/*
-	\033[1;34m: Azul brillante
-	\033[1;35m: Magenta brillante
-	\033[1;36m: Cyan brillante
-	\033[1;37m: Blanco brillante
-	\033[0;30m: Negro
-	\033[0;90m: Gris oscuro
-	\033[0;91m: Rojo oscuro
-	\033[0;92m: Verde oscuro
-	\033[0;93m: Amarillo oscuro
-	\033[0;94m: Azul oscuro
-	\033[0;95m: Magenta oscuro
-	\033[0;96m: Cyan oscuro
-	\033[0;97m: Blanco
-	*/
+
 	const string rojo = "\033[1;31m";
 	const string verde = "\033[1;32m";
 	const string amarillo = "\033[1;33m";
