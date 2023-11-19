@@ -1,7 +1,6 @@
 ﻿//import header file
 #include "libreria.h"
 
-
 /*
 * PAISES QUE IRAN A ATLETISMO
 Argentina Argentina (ARG) (10)
@@ -228,6 +227,10 @@ void imprimirStickman(string j, int x, int y) {
 	Console::SetCursorPosition(x, y);
 	cout << colorExtremidades << "/ \\" << reset;
 }
+void ubica(int x, int y)
+{
+	Console::SetCursorPosition(x, y);
+}
 
 string mostrarPaises(string* paises) {
 	int tecla;
@@ -260,13 +263,13 @@ void configuracionConsola() {
 }
 void posicionInicialPersonajes(Personaje* jugador, Personaje* enemigo, string* paises) {
 	jugador->x = 6;
-	jugador->y = 4;
-	enemigo[1].x = 6;
-	enemigo[1].y = 11;
+	jugador->y = 5;
+	enemigo[0].x = 7;
+	enemigo[0].y = 11;
+	enemigo[0].pais = paises[rand() % 24];
+	enemigo[1].x = 7;
+	enemigo[1].y = 18;
 	enemigo[1].pais = paises[rand() % 24];
-	enemigo[2].x = 6;
-	enemigo[2].y = 18;
-	enemigo[2].pais = paises[rand() % 24];
 }
 void cuentaRegresiva() {
 	Console::BackgroundColor = ConsoleColor::Black;
@@ -281,29 +284,168 @@ void cuentaRegresiva() {
 	Console::SetCursorPosition(40, 12);
 	cout << "   ";
 }
+void borrar_personaje(int x, int y)
+{
+	ubica(x, y);     cout << "   ";
+	ubica(x, y + 1); cout << "   ";
+	ubica(x, y + 2); cout << "   ";
+
+}
+
+
+void dibujar_personaje(int x, int y)
+{
+	ubica(x, y);     cout << " O ";
+	ubica(x, y + 1); cout << "/|\\";
+	ubica(x, y + 2); cout << "/ \\";
+
+}
+void salto(int& x, int y) {
+
+	//elevar
+	borrar_personaje(x, y);
+	dibujar_personaje(x, y - 1);
+	_sleep(100);
+
+	borrar_personaje(x, y - 1);
+
+	dibujar_personaje(x, y - 2);
+	_sleep(100);
+
+	borrar_personaje(x, y - 2);
+
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	_sleep(100);
+	//mover horizontalmente
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+	x += 1;
+	dibujar_personaje(x, y - 3);
+	_sleep(100);
+
+	borrar_personaje(x, y - 3);
+
+
+	//caer
+	dibujar_personaje(x, y - 2);
+	_sleep(100);
+
+	borrar_personaje(x, y - 2);
+
+	dibujar_personaje(x, y - 1);
+	_sleep(100);
+
+	borrar_personaje(x, y - 1);
+	dibujar_personaje(x, y);
+}
+
+void moverEnemigos(Personaje* enemigo) {
+	for (int i = 0; i < 2; i++) {
+		//Hacemos que los enemigos se muevan hacia la derecha en cada iteración.
+		enemigo[i].x += 1;
+	}
+}
 int main() {
+	int x = 6, y = 5, opcion;
 	string paises[25] = { "ARG","BAH","BOL","BRA","CAN","CHI","COL","CRC","CUB","DMA","ECU","ESA","USA","GUA","IVB","JAM","MEX","PAN","PAR","PER","PUR","DOM","TTO","URU","VEN" };
 	Personaje* jugador = new Personaje;
-	Personaje* enemigo = new Personaje[2];
+	Personaje* enemigo = new Personaje[3];
 	Obstaculo* obs = new Obstaculo;
 	int nivel = 1;
 	jugador->pais = mostrarPaises(paises);
 	dibujarMapa();
 	posicionInicialPersonajes(jugador, enemigo, paises);
+	obs->x = 10;
+	obs->y = 17;
 	imprimirStickman(jugador->pais, jugador->x, jugador->y);
+	imprimirStickman(enemigo[0].pais, enemigo[0].x, enemigo[0].y);
 	imprimirStickman(enemigo[1].pais, enemigo[1].x, enemigo[1].y);
-	imprimirStickman(enemigo[2].pais, enemigo[2].x, enemigo[2].y);
-	imprimirObstaculo(obs->x,obs->y);
-
+	imprimirObstaculo(obs->x, obs->y);
+	dibujar_personaje(x, y);
 	cuentaRegresiva();
-	while (nivel==1) {
-		//Movimiento de enemigos
-		if (!_kbhit) {
-			enemigo[1].x += 1 + rand() % 3;
-			enemigo[2].x += 1 + rand() % 3;
+
+	while (1)
+	{
+
+		if (_kbhit())
+		{
+
+
+			//borrar
+			borrar_personaje(x, y);
+
+			//mover
+			char tecla = _getch();
+
+			if (tecla == DERECHA && x < 70) x++;
+
+			if (tecla == IZQUIERDA && x > 6) x--;
+
+			dibujar_personaje(x, y);
+
+			if (tecla == char(32))salto(x, y);
+
+			if (mapa[y][x] == 6) { cout << "GANASTE!!!!"; exit; }
+
+
+
+		}
+		if (!kbhit()) {
+
+			for (int i = 0; i < 2; i++) {
+				if (!(mapa[enemigo[i].y][enemigo[i].x] == 6)) {
+					borrar_personaje(enemigo[i].x - 1, enemigo[i].y);
+
+					moverEnemigos(enemigo);
+
+					imprimirStickman(enemigo[i].pais, enemigo[i].x, enemigo[i].y);
+					_sleep(100);
+				}
+				else {
+					ubica(3, 30); cout << "El jugador a perdido." << endl << "¿Quieres Intentarlo otra vez ? (0:no 1 : si)"; cin >> opcion;
+					if (opcion == 1) {
+						system("cls");
+						dibujarMapa();
+						posicionInicialPersonajes(jugador, enemigo, paises);
+						x = 6, y = 5;
+
+					}
+				}
+			}
 		}
 	}
-
 
 
 	_getch();

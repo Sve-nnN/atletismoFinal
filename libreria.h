@@ -5,7 +5,10 @@
 
 #define ALTO_VENTANA 80
 #define LARGO_VENTANA 40
-
+#define DERECHA 77
+#define IZQUIERDA 75
+#define ARRIBA 72
+#define ABAJO 80
 using namespace std;
 using namespace System;
 
