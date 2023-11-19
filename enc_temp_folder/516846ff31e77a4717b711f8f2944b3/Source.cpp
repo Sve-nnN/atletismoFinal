@@ -390,6 +390,8 @@ int main() {
 	int nivel = 1;
 	jugador->pais = mostrarPaises(paises);
 	posicionInicialPersonajes(jugador, enemigo, paises);
+	obs->x = 10;
+	obs->y = 17;
 	imprimirStickman(jugador->pais, jugador->x, jugador->y);
 	imprimirStickman(enemigo[0].pais, enemigo[0].x, enemigo[0].y);
 	imprimirStickman(enemigo[1].pais, enemigo[1].x, enemigo[1].y);
@@ -401,6 +403,7 @@ int main() {
 
 	while (nivel==1)
 	{
+		imprimirObstaculo(obs->x, obs->y);
 
 
 		if (_kbhit())
@@ -420,22 +423,8 @@ int main() {
 			dibujar_personaje(x, y);
 
 			if (tecla == char(32))salto(x, y);
-			if (mapa1[y][x] == 9) {
-				system("cls");
-				ubica(40, 15);
-				cout << jugador->pais << " Ha clasificado! pasando al siguiente nivel";
 
-				_sleep(1000);
-
-			}
-			if (mapa1[y][x] == 6) { 
-				system("cls");
-				ubica(40, 15);
-				cout << jugador->pais<<" Ha clasificado! pasando al siguiente nivel";
-
-				_sleep(1000);
-				 
-			}
+			if (mapa1[y][x] == 6) { cout << "GANASTE!!!!"; exit; }
 
 
 
